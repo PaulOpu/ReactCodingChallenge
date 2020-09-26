@@ -24,7 +24,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon'
 
 // Own Components
-import Table from '../../components/Table/SportTable';
+import SportTable from '../../components/Table/SportTable';
 
 // Constants
 import * as Constants from "../../services/handler/constants";
@@ -226,7 +226,7 @@ class Dashboard extends Component {
                     {/* Recent Orders */}
                     <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                        <Table />
+                        <SportTable />
                     </Paper>
                     </Grid>
                 </Grid>
