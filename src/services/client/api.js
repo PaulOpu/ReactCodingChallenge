@@ -1,26 +1,28 @@
+import { FilterNone } from "@material-ui/icons";
 import { API_URL } from "../handler/constants";
 
 class APIServices {
   getAll() {
     return fetch(API_URL).then(response => response.json());
   }
-  /*
+  
   get(id) {
-    return http.get(`/tutorials/${id}`);
+    return "";
   }
 
   create(data) {
-    return http.post("/tutorials", data);
+    return "";
   }
 
   update(id, data) {
-    return http.put(`/tutorials/${id}`, data);
+    return "";
   }
 
   delete(id) {
-    return http.delete(`/tutorials/${id}`);
+    console.log("delete item with id:".concat(id));
+    return true;
   }
-  */
+  
 }
 
 export default new APIServices();

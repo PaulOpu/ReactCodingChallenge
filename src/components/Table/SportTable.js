@@ -6,23 +6,12 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import Title from '../Title/Title';
 
 import APIServices from '../../services/client/api';
-
-
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44),
-  createData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(3, '16 Mar, 2019', 'Michael Jackson', 'Gary, IN', 'AMEX ⠀•••• 2000', 654.39),
-  createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
-];
 
 function preventDefault(event) {
   event.preventDefault();
@@ -31,6 +20,9 @@ function preventDefault(event) {
 const styles = theme => ({
   seeMore: {
     marginTop: theme.spacing(3),
+  },
+  margin: {
+    margin: theme.spacing(1),
   },
 });
 
@@ -44,12 +36,13 @@ class SportTable extends Component {
         };
 
         this.getSportData = this.getSportData.bind(this);
+        this.onDeleteClick = this.onDeleteClick.bind(this);
         
     }
 
     getSportData(){
       /*
-        id - .id, 
+        id - ._id, 
         away team - .teams.away.name,
         home team - .teams.home.name,
         Date - .time.date, 
@@ -68,16 +61,23 @@ class SportTable extends Component {
       this.getSportData();
     }
 
+    onDeleteClick(row){
+      const id = row._id;
+      
+      APIServices.delete(id);
+
+      const matches = this.state.matches;
+      delete matches[id];
+      this.setState({matches:matches})
+    }
+
     render(){
         const classes = this.props;
-
         const matches = Object.values(this.state.matches)
-
-        console.log(matches);
 
         return (
             <React.Fragment>
-              <Title>Recent Orders</Title>
+              <Title>Recent Scoccer Statistics</Title>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -92,14 +92,24 @@ class SportTable extends Component {
                 </TableHead>
                 <TableBody>
                   {matches.map(row => (
-                    <TableRow key={row.id}>
-                      <TableCell>{row.id}</TableCell>
+                    <TableRow key={row._id}>
+                      <TableCell>{row._id}</TableCell>
                       <TableCell>{row.teams.away.name}</TableCell>
                       <TableCell>{row.teams.home.name}</TableCell>
+                      {/*TODO: Date Format*/}
                       <TableCell>{row.time.date}</TableCell>
                       <TableCell>{row.time.time}</TableCell>
                       <TableCell>{row.result.away}:{row.result.home}</TableCell>
-                      <TableCell>Delete</TableCell>
+                      <TableCell>
+                      <IconButton 
+                        aria-label="delete" 
+                        className={classes.margin}
+                        onClick={() =>{this.onDeleteClick(row)}}>
+                        <DeleteIcon 
+                          color="secondary" 
+                          fontSize="small" />
+                      </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
