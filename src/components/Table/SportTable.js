@@ -11,8 +11,13 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import Title from '../Title/Title';
+import AddRecordButton from './components/AddRecordButton';
 
 import APIServices from '../../services/client/api';
+import * as Parser from "../../services/handler/parser";
+
+// Constants
+import * as Constants from "../../services/handler/constants";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -35,6 +40,10 @@ class SportTable extends Component {
             open: true,
             rowsPerPage: 5,
             page: 0,
+            matchDateFormat: "DD/MM/YY",
+            addDialogDateFormat: "DD-MM-YYYY",
+            outputDateFormat: "DD.MM.YYYY",
+
             matches: []
         };
 
@@ -42,6 +51,7 @@ class SportTable extends Component {
         this.onDeleteClick = this.onDeleteClick.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+        this.addRecord = this.addRecord.bind(this);
         
     }
 
@@ -55,8 +65,8 @@ class SportTable extends Component {
         Result - [.result.away,result.home] (optional: result.winner), 
         Actions - delete
       */
-      return APIServices.getAll().then(data => {
-        const matches = data.doc[0].data.matches
+      return APIServices.getAll().then(matches => {
+        console.log(matches);
         this.setState({matches:matches})
       });
       
@@ -67,13 +77,16 @@ class SportTable extends Component {
     }
 
     onDeleteClick(row){
-      const id = row._id;
-      
+      const id = row.id;
+      //delete object in database with corresponding id
       APIServices.delete(id);
 
+      //normally I would call a refresh of the table when the item is deleted
       const matches = this.state.matches;
-      delete matches[id];
-      this.setState({matches:matches})
+      const filtered = matches.filter(function(item) { 
+        return item.id !== id;  
+      });
+      this.setState({matches:filtered})
     }
 
     handleChangePage(event, newPage){
@@ -86,11 +99,22 @@ class SportTable extends Component {
         page:0
       })
     };
+
+    addRecord(record){
+      record.date = Parser.SetDateFormat(
+        record.date,
+        this.state.addDialogDateFormat,
+        this.state.matchDateFormat);
+      
+      const matches = this.state.matches.concat(record);
+      this.setState({matches:matches})
+      
+    }
   
 
     render(){
         const classes = this.props;
-        const rows = Object.values(this.state.matches);
+        const rows = this.state.matches;
         
         const page = this.state.page;
         const rowsPerPage = this.state.rowsPerPage;
@@ -101,12 +125,9 @@ class SportTable extends Component {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Team Away</TableCell>
-                    <TableCell>Team Home</TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Result</TableCell>
+                    {Constants.TABLE_COLUMNS.map(col =>(
+                      <TableCell key={col.id}>{col.label}</TableCell>
+                    ))}
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -114,14 +135,16 @@ class SportTable extends Component {
                   {rows.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage).map(row => (
-                    <TableRow key={row._id}>
-                      <TableCell>{row._id}</TableCell>
-                      <TableCell>{row.teams.away.name}</TableCell>
-                      <TableCell>{row.teams.home.name}</TableCell>
-                      {/*TODO: Date Format*/}
-                      <TableCell>{row.time.date}</TableCell>
-                      <TableCell>{row.time.time}</TableCell>
-                      <TableCell>{row.result.away}:{row.result.home}</TableCell>
+                    <TableRow key={row.id}>
+                      {/*TODO: Dynamically create TableCells with map and TABLE_COLUMNS*/}
+                      <TableCell>{row.id}</TableCell>
+                      <TableCell>{row.teamAway}</TableCell>
+                      <TableCell>{row.teamHome}</TableCell>
+                      {/*TODO: Date Format () =>{Parser.SetDateFormat(row.time.date,"DD/MM/YYYY","DD-MM-YYYY")}*/}
+                      <TableCell>{Parser.SetDateFormat(row.date,this.state.matchDateFormat,this.state.outputDateFormat)}</TableCell>
+                      <TableCell>{row.time}</TableCell>
+                      <TableCell>{row.resultAway}</TableCell>
+                      <TableCell>{row.resultHome}</TableCell>
                       <TableCell>
                       <IconButton 
                         aria-label="delete" 
@@ -136,6 +159,7 @@ class SportTable extends Component {
                   ))}
                 </TableBody>
               </Table>
+              <AddRecordButton onAddClick={this.addRecord}/>
               <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"
