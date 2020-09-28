@@ -1,5 +1,6 @@
+//Defines the table labels and types
 const MATCH_TABLE_COLUMNS = [
-    {id:"id",label:"ID",type:"number",text:"ID"},
+    {id:"id",label:"ID",type:"number"},
     {id:"teamAway",label:"Team Away",type:"string"},
     {id:"teamHome",label:"Team Home",type:"string"},
     {id:"date",label:"Date",type:"date"},
@@ -8,8 +9,15 @@ const MATCH_TABLE_COLUMNS = [
     {id:"resultHome",label:"Goals Home",type:"number"},
 ]
 
+// the API URL can be placed at a other place or be a input parameter of the app.
 const API_URL = "https://widgets.fn.sportradar.com/common/en/Etc:UTC/gismo/fixtures_tournament/93581/20"
 
+/**
+ * Transforms the API Call output into the table format
+ *
+ * @param {row} json 
+ * @public
+ */
 function extractMatchData(row) {
     return ({
         id:row._id,
@@ -22,6 +30,7 @@ function extractMatchData(row) {
     })
 }
 
+// just for visualization
 const NAVBAR_ITEMS = [
     {
         ICON: "dashboard",
@@ -41,6 +50,7 @@ const NAVBAR_ITEMS = [
     },
 ]
 
+// just for visualization
 const NAVBAR_NEWS = [
     {
         ICON: "announcement",

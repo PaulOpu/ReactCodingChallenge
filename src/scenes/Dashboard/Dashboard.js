@@ -122,7 +122,11 @@ const styles = theme => ({
     height: 240,
   },
 });
-
+/**
+ * The dashboard gives the first impression from the react app.
+ * Here, keyfigures and other visualization can be shown.
+ * For the moment, it just includes the Matches table.
+ */
 class Dashboard extends Component {
     constructor(props){
         super(props);
@@ -143,7 +147,6 @@ class Dashboard extends Component {
         this.setState({open:false});
     };
   
-    
     render(){
         const { classes } = this.props;
 

@@ -21,7 +21,9 @@ const styles = theme => ({
   });
 
 
-
+/**
+ * This Button incorporates the dialog with the user to add a match to the table.
+ */
 class AddRecordButton extends Component{
     
     constructor(props){
@@ -41,7 +43,7 @@ class AddRecordButton extends Component{
         this.handleAdd = this.handleAdd.bind(this);
 
     };
-
+    
     handleClickOpen(){
         this.setState({open:true});
     };
@@ -49,12 +51,23 @@ class AddRecordButton extends Component{
     handleClose(){
         this.setState({open:false});
     };
-
+    /**
+     * This function executes the onAddClick function of the parent component. 
+     * It is triggerd by the "add" button of the dialog.
+     *
+     * @public
+     */
     handleAdd(){
         this.props.onAddClick(this.state.newRecord);
         this.setState({open:false});
     };
 
+    /**
+     * Insert text at cursor position.
+     *
+     * @param {e} event
+     * @public
+     */
     handleChange(e){
         const newRecord = this.state.newRecord;
         newRecord[e.target.id] = e.target.value;
