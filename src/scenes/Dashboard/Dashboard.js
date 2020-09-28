@@ -33,8 +33,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://www.sportradar.com/">
-        Sportradar
+      <Link color="inherit" href="https://www.linkedin.com/in/paul-opuchlich-484a85136/">
+        Paul Opuchlich
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -127,7 +127,7 @@ class Dashboard extends Component {
     constructor(props){
         super(props);
         this.state = {
-            open: true
+            open: false
         };
 
         this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
@@ -211,19 +211,8 @@ class Dashboard extends Component {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
-                    {/* Chart */}
-                    <Grid item xs={12} md={8} lg={9}>
-                    <Paper className={fixedHeightPaper}>
-                        {/*<Chart />*/}
-                    </Paper>
-                    </Grid>
-                    {/* Recent Deposits */}
-                    <Grid item xs={12} md={4} lg={3}>
-                    <Paper className={fixedHeightPaper}>
-                        {/*<Deposits />*/}
-                    </Paper>
-                    </Grid>
-                    {/* Recent Orders */}
+                    {/* TODO: Key Figures about Table */}
+                    
                     <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <SportTable />

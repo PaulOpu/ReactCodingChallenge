@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Link from '@material-ui/core/Link';
 import { withStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -24,9 +23,6 @@ function preventDefault(event) {
 }
 
 const styles = theme => ({
-  seeMore: {
-    marginTop: theme.spacing(3),
-  },
   margin: {
     margin: theme.spacing(1),
   },
@@ -56,17 +52,7 @@ class SportTable extends Component {
     }
 
     getSportData(){
-      /*
-        id - ._id, 
-        away team - .teams.away.name,
-        home team - .teams.home.name,
-        Date - .time.date, 
-        Time - .time.time, , 
-        Result - [.result.away,result.home] (optional: result.winner), 
-        Actions - delete
-      */
       return APIServices.getAll().then(matches => {
-        console.log(matches);
         this.setState({matches:matches})
       });
       
@@ -106,6 +92,9 @@ class SportTable extends Component {
         this.state.addDialogDateFormat,
         this.state.matchDateFormat);
       
+      APIServices.create(record);
+
+      //
       const matches = this.state.matches.concat(record);
       this.setState({matches:matches})
       
@@ -125,7 +114,7 @@ class SportTable extends Component {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    {Constants.TABLE_COLUMNS.map(col =>(
+                    {Constants.MATCH_TABLE_COLUMNS.map(col =>(
                       <TableCell key={col.id}>{col.label}</TableCell>
                     ))}
                     <TableCell>Action</TableCell>
@@ -136,7 +125,7 @@ class SportTable extends Component {
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage).map(row => (
                     <TableRow key={row.id}>
-                      {/*TODO: Dynamically create TableCells with map and TABLE_COLUMNS*/}
+                      {/*TODO: Dynamically create TableCells with map and MATCH_TABLE_COLUMNS*/}
                       <TableCell>{row.id}</TableCell>
                       <TableCell>{row.teamAway}</TableCell>
                       <TableCell>{row.teamHome}</TableCell>
@@ -159,7 +148,7 @@ class SportTable extends Component {
                   ))}
                 </TableBody>
               </Table>
-              <AddRecordButton onAddClick={this.addRecord}/>
+              <AddRecordButton onAddClick={this.addRecord} recordProperties={Constants.MATCH_TABLE_COLUMNS}/>
               <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import clsx from 'clsx';
 import { withStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -11,13 +12,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from "prop-types";
 
-// Constants
-import * as Constants from "../../../services/handler/constants";
-
-
 const styles = theme => ({
     button: {
-        margin: theme.spacing(1),
+        margin: 10,
       },
     textfieldGrid: {
         flexGrow: 1,
@@ -36,7 +33,7 @@ class AddRecordButton extends Component{
         }
 
         this.state.newRecord = Object.assign(
-            this.state.newRecord, ...Constants.TABLE_COLUMNS.map(
+            this.state.newRecord, ...this.props.recordProperties.map(
             (textField) => ({[textField.id]: ""})));
 
         this.handleClickOpen = this.handleClickOpen.bind(this);
@@ -44,11 +41,6 @@ class AddRecordButton extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
 
-        
-
-        
-        
-        
     };
 
     handleClickOpen(){
@@ -75,9 +67,7 @@ class AddRecordButton extends Component{
     render(){
         const classes = this.props;
 
-        
-
-        const gridFields = Constants.TABLE_COLUMNS.map(textField =>
+        const gridFields = this.props.recordProperties.map(textField =>
             <Grid item xs={4} key={textField.id}>
                 <TextField 
                     id={textField.id} 
@@ -93,10 +83,11 @@ class AddRecordButton extends Component{
 
         return (
             <React.Fragment>
+            {/*TODO: add margin to button*/}
             <Button
                 variant="contained"
                 color="primary"
-                className={classes.button}
+                className={clsx(classes.button)}
                 endIcon={<AddIcon/>}
                 onClick={this.handleClickOpen}
             >
@@ -130,6 +121,7 @@ class AddRecordButton extends Component{
 
 AddRecordButton.propTypes = {
     onAddClick: PropTypes.func.isRequired,
+    recordProperties: PropTypes.array.isRequired,
 };
 
 
