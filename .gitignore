@@ -68,3 +68,6 @@ typings/
 
 # Production
 build/
+
+# styleguide
+styleguide/

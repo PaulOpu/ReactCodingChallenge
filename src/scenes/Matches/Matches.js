@@ -17,7 +17,12 @@ const styles = theme => ({
   },
 });
 
-
+/**
+ * The Matches component shows a table with all matches from the database.
+ * Moreover, it incorporates the logic that is required to interact with the table content.
+ * It is possible to add matches and to delete them. Thereby, the app sends a mockup API call 
+ * to the backend.
+ */
 class Matches extends Component {
     constructor(props){
         super(props);
@@ -38,6 +43,11 @@ class Matches extends Component {
         
     }
 
+    /**
+     * Retrieve the matches data for the table and sets the state.
+     *
+     * @public
+     */
     getSportData(){
       return APIServices.getAll().then(matches => {
         this.setState({matches:matches})
@@ -49,12 +59,22 @@ class Matches extends Component {
       this.getSportData();
     }
 
+    /**
+     * Triggered if the user presses the delete action of a row. 
+     * Deletes the entry from the database.
+     * In this app this procedure is mocked and therefore, the entry is just filtered out.
+     * Normally, the app waits for the deletion with a loading toast indicator and refreshes the data afterwards.
+     *
+     * @param {row} dict
+     * @public
+     */
     onDeleteClick(row){
       const id = row.id;
-      //delete object in database with corresponding id
+
+      // API Call (MockUp)
       APIServices.delete(id);
 
-      //normally I would call a refresh of the table when the item is deleted
+      // normally, just refresh after succesfull deletion
       const matches = this.state.matches;
       const filtered = matches.filter(function(item) { 
         return item.id !== id;  
@@ -62,15 +82,25 @@ class Matches extends Component {
       this.setState({matches:filtered})
     }
 
+    /**
+     * Triggered if the user presses the add button of the table. 
+     * Transform the date, so that it matches the format of the database output.
+     * Call the API service and add the entry. Normally, the process waits with a loading toast 
+     * indicator until the database returns a state. Then the table is refreshed.
+     * 
+     * @param {record} dict
+     * @public
+     */
     addRecord(record){
       record.date = Parser.SetDateFormat(
         record.date,
         this.state.addDialogDateFormat,
         this.state.dataDateFormat);
       
+      // API Call (MockUp)
       APIServices.create(record);
 
-      //
+      // normally, just refresh after succesfull insetion
       const matches = this.state.matches.concat(record);
       this.setState({matches:matches})
       

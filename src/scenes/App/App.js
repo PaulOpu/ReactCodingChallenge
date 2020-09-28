@@ -10,9 +10,11 @@ const styles = theme => ({
 
 })
 
-
+/**
+ * This component is the entry point into the react app. From here the dashboard is loaded and global settings can be set.
+ */
 class App extends Component {
-
+  
   render(){
     return (
       <div className="App">
