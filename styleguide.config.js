@@ -1,14 +1,6 @@
 module.exports = {
     sections: [
       {
-        name: 'Introduction',
-        content: 'docs/introduction.md',
-      },
-      {
-        name: 'Usage',
-        content: 'docs/usage.md',
-      },
-      {
         name: 'Documentation',
         description: 'These sections documents all components and important files in the react app.',
         sections: [
@@ -30,7 +22,7 @@ module.exports = {
           {
             name: 'Services',
             description: 'A services provides additional functionalities to the react app like parsing or api calls.',
-            components: 'src/services/**/*.js',
+            //components: 'src/services/**/*.js',
             content: 'docs/services.md',
             exampleMode: 'expand', // 'hide' | 'collapse' | 'expand'
             usageMode: 'expand' // 'hide' | 'collapse' | 'expand'
