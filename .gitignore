@@ -64,4 +64,10 @@ typings/
 *.DS_Store
 
 # VS Code
-*.DS_Store
+*.vs_code
+
+# Production
+build/
+
+# styleguide
+styleguide/
