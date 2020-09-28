@@ -1,9 +1,15 @@
 import { FilterNone } from "@material-ui/icons";
-import { API_URL } from "../handler/constants";
+import { API_URL, extractMatchData } from "../handler/constants";
 
 class APIServices {
   getAll() {
-    return fetch(API_URL).then(response => response.json());
+    return fetch(API_URL).then(response => response.json()).then(
+        data =>{
+            // TODO: dynamic extraction of json
+            return Object.values(data.doc[0].data.matches).map(row =>{
+                return extractMatchData(row);
+            })
+        });
   }
   
   get(id) {
@@ -11,7 +17,8 @@ class APIServices {
   }
 
   create(data) {
-    return "";
+    console.log("Add new record to database with the values: ",data);
+    return true;
   }
 
   update(id, data) {
