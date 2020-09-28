@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import clsx from 'clsx';
 import { withStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -65,7 +64,7 @@ class AddRecordButton extends Component{
       }
 
     render(){
-        const classes = this.props;
+        const { classes } = this.props;
 
         const gridFields = this.props.recordProperties.map(textField =>
             <Grid item xs={4} key={textField.id}>
@@ -87,7 +86,7 @@ class AddRecordButton extends Component{
             <Button
                 variant="contained"
                 color="primary"
-                className={clsx(classes.button)}
+                className={classes.button}
                 endIcon={<AddIcon/>}
                 onClick={this.handleClickOpen}
             >

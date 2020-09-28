@@ -24,7 +24,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon'
 
 // Own Components
-import SportTable from '../../components/Table/SportTable';
+import Matches from '../Matches/Matches';
 
 // Constants
 import * as Constants from "../../services/handler/constants";
@@ -146,7 +146,6 @@ class Dashboard extends Component {
     
     render(){
         const { classes } = this.props;
-        var fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
         const mainListItems = Constants.NAVBAR_ITEMS.map(
             item => 
@@ -215,7 +214,7 @@ class Dashboard extends Component {
                     
                     <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                        <SportTable />
+                        <Matches />
                     </Paper>
                     </Grid>
                 </Grid>

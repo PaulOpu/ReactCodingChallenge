@@ -1,4 +1,3 @@
-import { FilterNone } from "@material-ui/icons";
 import { API_URL, extractMatchData } from "../handler/constants";
 
 class APIServices {

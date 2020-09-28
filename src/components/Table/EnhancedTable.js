@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -9,18 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import Title from '../Title/Title';
-import AddRecordButton from './components/AddRecordButton';
-
-import APIServices from '../../services/client/api';
 import * as Parser from "../../services/handler/parser";
 
-// Constants
-import * as Constants from "../../services/handler/constants";
-
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 const styles = theme => ({
   margin: {
@@ -29,52 +20,22 @@ const styles = theme => ({
 });
 
 
-class SportTable extends Component {
+class EnhancedTable extends Component {
     constructor(props){
         super(props);
+        
         this.state = {
             open: true,
             rowsPerPage: 5,
             page: 0,
-            matchDateFormat: "DD/MM/YY",
-            addDialogDateFormat: "DD-MM-YYYY",
-            outputDateFormat: "DD.MM.YYYY",
-
-            matches: []
+            columns: props.columns
         };
 
-        this.getSportData = this.getSportData.bind(this);
-        this.onDeleteClick = this.onDeleteClick.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-        this.addRecord = this.addRecord.bind(this);
         
     }
-
-    getSportData(){
-      return APIServices.getAll().then(matches => {
-        this.setState({matches:matches})
-      });
-      
-    }
-
-    componentDidMount(){
-      this.getSportData();
-    }
-
-    onDeleteClick(row){
-      const id = row.id;
-      //delete object in database with corresponding id
-      APIServices.delete(id);
-
-      //normally I would call a refresh of the table when the item is deleted
-      const matches = this.state.matches;
-      const filtered = matches.filter(function(item) { 
-        return item.id !== id;  
-      });
-      this.setState({matches:filtered})
-    }
-
+  
     handleChangePage(event, newPage){
       this.setState({page:newPage})
     };
@@ -86,42 +47,27 @@ class SportTable extends Component {
       })
     };
 
-    addRecord(record){
-      record.date = Parser.SetDateFormat(
-        record.date,
-        this.state.addDialogDateFormat,
-        this.state.matchDateFormat);
-      
-      APIServices.create(record);
-
-      //
-      const matches = this.state.matches.concat(record);
-      this.setState({matches:matches})
-      
-    }
+    
   
 
     render(){
         const classes = this.props;
-        const rows = this.state.matches;
-        
-        const page = this.state.page;
-        const rowsPerPage = this.state.rowsPerPage;
+        const {page, rowsPerPage, columns } = this.state;
+        const { data } = this.props;
 
         return (
             <React.Fragment>
-              <Title>Recent Scoccer Statistics</Title>
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    {Constants.MATCH_TABLE_COLUMNS.map(col =>(
+                    {columns.map(col =>(
                       <TableCell key={col.id}>{col.label}</TableCell>
                     ))}
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.slice(
+                  {data.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage).map(row => (
                     <TableRow key={row.id}>
@@ -130,7 +76,7 @@ class SportTable extends Component {
                       <TableCell>{row.teamAway}</TableCell>
                       <TableCell>{row.teamHome}</TableCell>
                       {/*TODO: Date Format () =>{Parser.SetDateFormat(row.time.date,"DD/MM/YYYY","DD-MM-YYYY")}*/}
-                      <TableCell>{Parser.SetDateFormat(row.date,this.state.matchDateFormat,this.state.outputDateFormat)}</TableCell>
+                      <TableCell>{Parser.SetDateFormat(row.date,this.props.dataDateFormat,this.props.outputDateFormat)}</TableCell>
                       <TableCell>{row.time}</TableCell>
                       <TableCell>{row.resultAway}</TableCell>
                       <TableCell>{row.resultHome}</TableCell>
@@ -138,7 +84,7 @@ class SportTable extends Component {
                       <IconButton 
                         aria-label="delete" 
                         className={classes.margin}
-                        onClick={() =>{this.onDeleteClick(row)}}>
+                        onClick={() =>{this.props.onDeleteClick(row)}}>
                         <DeleteIcon 
                           color="secondary" 
                           fontSize="small" />
@@ -148,11 +94,10 @@ class SportTable extends Component {
                   ))}
                 </TableBody>
               </Table>
-              <AddRecordButton onAddClick={this.addRecord} recordProperties={Constants.MATCH_TABLE_COLUMNS}/>
               <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"
-                  count={rows.length}
+                  count={data.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onChangePage={this.handleChangePage}
@@ -163,7 +108,13 @@ class SportTable extends Component {
     }
 }
 
+EnhancedTable.propTypes = {
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
+  dataDateFormat: PropTypes.string.isRequired,
+  outputDateFormat: PropTypes.string.isRequired,
+};
 
 
-
-export default withStyles(styles)(SportTable);
+export default withStyles(styles)(EnhancedTable);
