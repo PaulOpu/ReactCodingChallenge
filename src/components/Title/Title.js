@@ -6,9 +6,6 @@ import Typography from '@material-ui/core/Typography';
  * This is a reusable title for the tiles in a grid or a AppBar.
  */
 class Title extends Component {
-  constructor(props){
-    super(props);
-  }
 
   render(){
     return (
