@@ -71,3 +71,7 @@ build/
 
 # styleguide
 styleguide/
+
+# Docker
+Dockerfile
+.dockerignore
