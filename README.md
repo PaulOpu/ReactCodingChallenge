@@ -43,10 +43,28 @@ bash start.sh
 To build the app run `build.sh` and afterwards you can start a server to use the app. The production app is on port 5000.
 
 ```bash
-bash build.sh;
+bash build.sh
 serve -s build
 ```
 
+The app can also be deployed in a docker container. Build the container with:
+
+```bash
+docker build -t sample:dev .
+```
+
+and run the container with:
+
+```
+docker run \
+    -it \
+    --rm \
+    -v ${PWD}:/app \
+    -v /app/node_modules \
+    -p 3001:3000 \
+    -e CHOKIDAR_USEPOLLING=true \
+    sample:dev
+```
 
 ## Documentation
 
