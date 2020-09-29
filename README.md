@@ -34,7 +34,7 @@ Let's get started.
 The app can be tested by executing the `start.sh` script. The development app is on port 3000.
 
 ```bash
-bash start.sh;
+bash start.sh
 ```
 
 
@@ -44,7 +44,7 @@ To build the app run `build.sh` and afterwards you can start a server to use the
 
 ```bash
 bash build.sh;
-serve -s build;
+serve -s build
 ```
 
 
@@ -53,13 +53,13 @@ serve -s build;
 The documentation was created with [react-styleguidist](https://react-styleguidist.js.org/). The server can be started with:
 
 ```bash
-npx styleguidist server;
+npx styleguidist server
 ```
 
 A product version can be built with:
 
 ```bash
-npx styleguidist build;
+npx styleguidist build
 ```
 
 ## Improvements
