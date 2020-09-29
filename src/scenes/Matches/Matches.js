@@ -25,7 +25,7 @@ const styles = theme => ({
  */
 class Matches extends Component {
     constructor(props){
-        super(props);
+        super();
         this.state = {
             open: true,
             rowsPerPage: 5,
@@ -108,11 +108,14 @@ class Matches extends Component {
   
 
     render(){
+
+        const { matches } = this.state;
+        
         return (
             <React.Fragment>
               <Title>Recent Scoccer Statistics</Title>
               <EnhancedTable 
-                data= {this.state.matches}
+                data= {matches}
                 columns= {Constants.MATCH_TABLE_COLUMNS}
                 onDeleteClick= {this.onDeleteClick}
                 dataDateFormat= {this.state.dataDateFormat}
@@ -122,8 +125,5 @@ class Matches extends Component {
           );
     }
 }
-
-
-
 
 export default withStyles(styles)(Matches);
