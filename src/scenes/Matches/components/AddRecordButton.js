@@ -62,7 +62,7 @@ class AddRecordButton extends Component{
     };
 
     /**
-     * Insert text at cursor position.
+     * Changes the values in states if the user enters letters.
      *
      * @param {e} event
      * @public
@@ -131,7 +131,9 @@ class AddRecordButton extends Component{
 }
 
 AddRecordButton.propTypes = {
+    /** Function that is called if the user pressed "add" in the dialog. */
     onAddClick: PropTypes.func.isRequired,
+    /** Incroporates the fields that the add button component should render. */
     recordProperties: PropTypes.array.isRequired,
 };
 

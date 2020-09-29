@@ -28,7 +28,6 @@ class EnhancedTable extends Component {
         super();
         
         this.state = {
-
             open: true,
             rowsPerPage: 5,
             page: 0,

@@ -18,6 +18,7 @@ class Title extends Component {
 }
 
 Title.propTypes = {
+  /** The node that should be displayed as a title. */
   children: PropTypes.node,
 };
 
