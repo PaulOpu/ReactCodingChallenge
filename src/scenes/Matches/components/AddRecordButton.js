@@ -27,15 +27,13 @@ const styles = theme => ({
 class AddRecordButton extends Component{
     
     constructor(props){
-        super(props);
+        super();
+
         this.state = {
             open: false,
+            /** dynamically generates a dictionary for the new record */
             newRecord:{}
         }
-
-        this.state.newRecord = Object.assign(
-            this.state.newRecord, ...this.props.recordProperties.map(
-            (textField) => ({[textField.id]: ""})));
 
         this.handleClickOpen = this.handleClickOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -58,12 +56,13 @@ class AddRecordButton extends Component{
      * @public
      */
     handleAdd(){
-        this.props.onAddClick(this.state.newRecord);
-        this.setState({open:false});
+        const { newRecord } = this.state;
+        this.props.onAddClick(newRecord);
+        this.setState({open:false,newRecord:{}});
     };
 
     /**
-     * Insert text at cursor position.
+     * Changes the values in states if the user enters letters.
      *
      * @param {e} event
      * @public
@@ -77,10 +76,11 @@ class AddRecordButton extends Component{
       }
 
     render(){
-        const { classes } = this.props;
+        const { classes, recordProperties } = this.props;
+        const { open } = this.state;
 
-        const gridFields = this.props.recordProperties.map(textField =>
-            <Grid item xs={4} key={textField.id}>
+        const gridFields = recordProperties.map(textField =>
+            <Grid item xs={6} sm={4} md={4} lg={4} key={textField.id}>
                 <TextField 
                     id={textField.id} 
                     label={textField.label} 
@@ -88,7 +88,6 @@ class AddRecordButton extends Component{
                     InputLabelProps={{
                         shrink: true,
                       }}
-                    
                     onChange={this.handleChange}/>
             </Grid>
         );
@@ -105,16 +104,16 @@ class AddRecordButton extends Component{
             >
                 Add
             </Button>
-            <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+            <Dialog open={open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Add new Record</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Please fill out these information to add a new match to the database.
                     </DialogContentText>
                     <div className={classes.textfieldGrid}>
-                    <Grid container spacing={3}>
-                        {gridFields}
-                    </Grid>
+                        <Grid container spacing={1}>
+                            {gridFields}
+                        </Grid>
                     </div>
                 </DialogContent>
                 <DialogActions>
@@ -132,7 +131,9 @@ class AddRecordButton extends Component{
 }
 
 AddRecordButton.propTypes = {
+    /** Function that is called if the user pressed "add" in the dialog. */
     onAddClick: PropTypes.func.isRequired,
+    /** Incroporates the fields that the add button component should render. */
     recordProperties: PropTypes.array.isRequired,
 };
 

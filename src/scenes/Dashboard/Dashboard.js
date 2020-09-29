@@ -129,7 +129,7 @@ const styles = theme => ({
  */
 class Dashboard extends Component {
     constructor(props){
-        super(props);
+        super();
         this.state = {
             open: false
         };
@@ -149,8 +149,10 @@ class Dashboard extends Component {
   
     render(){
         const { classes } = this.props;
+        const { open } = this.state;
+        const { NAVBAR_PRIMARY, NAVBAR_SECONDARY } = Constants;
 
-        const mainListItems = Constants.NAVBAR_ITEMS.map(
+        const mainListItems = NAVBAR_PRIMARY.map(
             item => 
               <ListItem key={item.NAME} button>
                 <ListItemIcon>
@@ -159,7 +161,7 @@ class Dashboard extends Component {
               <ListItemText primary={item.NAME} />
               </ListItem>);
           
-        const secondaryListItems = Constants.NAVBAR_NEWS.map(
+        const secondaryListItems = NAVBAR_SECONDARY.map(
         item => 
             <ListItem key={item.NAME} button>
             <ListItemIcon>
@@ -171,14 +173,14 @@ class Dashboard extends Component {
         return (
             <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
+            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                 <IconButton
                     edge="start"
                     color="inherit"
                     aria-label="open drawer"
                     onClick={this.handleDrawerOpen}
-                    className={clsx(classes.menuButton, this.state.open && classes.menuButtonHidden)}
+                    className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
                 >
                     <MenuIcon />
                 </IconButton>
@@ -195,9 +197,9 @@ class Dashboard extends Component {
             <Drawer
                 variant="permanent"
                 classes={{
-                paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+                paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
                 }}
-                open={this.state.open}
+                open={open}
             >
                 <div className={classes.toolbarIcon}>
                 <IconButton onClick={this.handleDrawerClose}>

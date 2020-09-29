@@ -1,1 +1,1 @@
-npx react-scripts build;
+npm run-script build;

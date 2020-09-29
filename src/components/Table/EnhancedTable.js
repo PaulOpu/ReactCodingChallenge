@@ -20,13 +20,14 @@ const styles = theme => ({
 });
 /**
  * This table enhances the normal material-ui table with pagination.
+ * For the future, the [material-table](https://github.com/mbrn/material-table)
+ * is a good start for a table with many functions.
  */
 class EnhancedTable extends Component {
     constructor(props){
-        super(props);
+        super();
         
         this.state = {
-
             open: true,
             rowsPerPage: 5,
             page: 0,
@@ -61,14 +62,10 @@ class EnhancedTable extends Component {
       })
     };
 
-    
-  
-
     render(){
       /* ... */
-      const classes = this.props;
+      const { classes, data } = this.props;
       const {page, rowsPerPage, columns } = this.state;
-      const { data } = this.props;
 
       return (
           <React.Fragment>
@@ -76,7 +73,7 @@ class EnhancedTable extends Component {
               <TableHead>
                 <TableRow>
                   {columns.map(col =>(
-                    <TableCell key={col.id}>{col.label}</TableCell>
+                    <TableCell align={col.align} key={col.id}>{col.label}</TableCell>
                   ))}
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -86,15 +83,14 @@ class EnhancedTable extends Component {
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage).map(row => (
                   <TableRow key={row.id}>
-                    {/*TODO: Dynamically create TableCells with map and MATCH_TABLE_COLUMNS*/}
-                    <TableCell>{row.id}</TableCell>
-                    <TableCell>{row.teamAway}</TableCell>
-                    <TableCell>{row.teamHome}</TableCell>
-                    {/*TODO: Date Format () =>{Parser.SetDateFormat(row.time.date,"DD/MM/YYYY","DD-MM-YYYY")}*/}
-                    <TableCell>{Parser.SetDateFormat(row.date,this.props.dataDateFormat,this.props.outputDateFormat)}</TableCell>
-                    <TableCell>{row.time}</TableCell>
-                    <TableCell>{row.resultAway}</TableCell>
-                    <TableCell>{row.resultHome}</TableCell>
+                    {columns.map(col =>{
+                      return col.type === "date" ? 
+                        <TableCell align={col.align} key={row.id + col.label}>{Parser.SetDateFormat(row[col.id],this.props.dataDateFormat,this.props.outputDateFormat)}</TableCell>
+                      :
+                        <TableCell align={col.align} key={row.id + col.label}>{row[col.id]}</TableCell>
+                    }
+                      
+                    )}
                     <TableCell>
                     <IconButton 
                       aria-label="delete" 
