@@ -71,5 +71,5 @@ For the match table, it would have been even better if the results of both teams
 
 Next, a [toastify](https://github.com/fkhadra/react-toastify) component could highlight the delete and add results. 
 
-Finally, the class components can be replaced by functional components to save lines of code. Moreover, they have some other advantages described in this [article]https://blog.bitsrc.io/will-react-classes-get-deprecated-because-of-hooks-bb62938ac1f5).
+Finally, the class components can be replaced by functional components to save lines of code. Moreover, they have some other advantages described in this [article](https://blog.bitsrc.io/will-react-classes-get-deprecated-because-of-hooks-bb62938ac1f5).
 
