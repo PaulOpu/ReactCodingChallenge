@@ -28,12 +28,11 @@ class AddRecordButton extends Component{
     
     constructor(props){
         super();
+
         this.state = {
             open: false,
             /** dynamically generates a dictionary for the new record */
-            newRecord:Object.assign(
-                {}, ...props.recordProperties.map(
-                (textField) => ({[textField.id]: ""})))
+            newRecord:{}
         }
 
         this.handleClickOpen = this.handleClickOpen.bind(this);
@@ -57,8 +56,9 @@ class AddRecordButton extends Component{
      * @public
      */
     handleAdd(){
-        this.props.onAddClick(this.state.newRecord);
-        this.setState({open:false});
+        const { newRecord } = this.state;
+        this.props.onAddClick(newRecord);
+        this.setState({open:false,newRecord:{}});
     };
 
     /**

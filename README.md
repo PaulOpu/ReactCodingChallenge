@@ -68,3 +68,8 @@ One big advantage is the usage of a framework that connects all states of the co
 
 Another improvement is the usage of an advanced table component like [material-table](https://github.com/mbrn/material-table). 
 For the match table, it would have been even better if the results of both teams are shown next to each other (5:4) and not in different rows. I tried this before but also wanted to have a generic solution by passing columns and rows to the table component. Thereby, the table structure is generated on the fly. As an improvement, I can provide a column and row template that the table is using und that combines the results of both teams.
+
+Next, a [toastify](https://github.com/fkhadra/react-toastify) component could highlight the delete and add results. 
+
+Finally, the class components can be replaced by functional components to save lines of code. Moreover, they have some other advantages described in this [article]https://blog.bitsrc.io/will-react-classes-get-deprecated-because-of-hooks-bb62938ac1f5).
+
